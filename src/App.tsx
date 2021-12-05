@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Route, Routes } from "react-router-dom";
+import { createTheme, CssBaseline, useMediaQuery } from "@mui/material";
+import { ThemeProvider } from "@mui/system";
+import React from "react";
+import Bar from "./components/Bar";
+import Login from "./components/Login";
+import Register from "./components/Register";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+const App = (): JSX.Element => {
+
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  const theme = React.useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: prefersDarkMode ? "dark" : "light",
+        },
+      }),
+    [prefersDarkMode]
   );
-}
+
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Bar />
+      <Routes>
+        <Route path="/" />
+
+        <Route path="/login" element={<Login />} />
+
+        <Route path="/register" element={<Register />} />
+
+      </Routes>
+    </ThemeProvider>
+
+  );
+};
 
 export default App;
