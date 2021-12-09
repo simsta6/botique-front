@@ -1,4 +1,5 @@
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { Alert } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -8,18 +9,45 @@ import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import emailValidator from "email-validator";
 import * as React from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { register } from "../services/UserServices";
+import { User } from "../utils/interfaces";
 
-export default function SignUp(): JSX.Element {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+interface Props {
+  setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
+}
+
+export default function SignUp({setUser}: Props): JSX.Element {
+  const [isRequestSent, setIsRequestSent] = React.useState(false);
+  const [responseMessage, setResponseMessage] = React.useState<string>();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    const first_name = data.get("first_name")?.toString();
+    const last_name = data.get("last_name")?.toString();
+    const email = data.get("email")?.toString();
+    const password = data.get("password")?.toString();
+    if (first_name && last_name && email && password) {
+      if (emailValidator.validate(email)) {
+        setIsRequestSent(true);
+        const response = await register({ first_name, last_name, email, password });
+        if (response.status === "Failed" && typeof response.data === "string") {
+          setResponseMessage(response.data);
+        } else if (response.status === "Success" && typeof response.data !== "string") {
+          navigate("/", { replace: true });
+          setUser(response.data);   
+        }
+        setIsRequestSent(false);
+      } else {
+        setResponseMessage("Invalid email");
+      }
+    } else {
+      setResponseMessage("All fields are required");
+    }
   };
 
   return (
@@ -44,10 +72,10 @@ export default function SignUp(): JSX.Element {
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="given-name"
-                name="firstName"
+                name="first_name"
                 required
                 fullWidth
-                id="firstName"
+                id="first_name"
                 label="First Name"
                 autoFocus
               />
@@ -56,9 +84,9 @@ export default function SignUp(): JSX.Element {
               <TextField
                 required
                 fullWidth
-                id="lastName"
+                id="last_name"
                 label="Last Name"
-                name="lastName"
+                name="last_name"
                 autoComplete="family-name"
               />
             </Grid>
@@ -84,11 +112,18 @@ export default function SignUp(): JSX.Element {
               />
             </Grid>
           </Grid>
+          {
+            responseMessage && 
+            <Alert severity="error" onClose={() => {
+              setResponseMessage("");
+            }}>{ responseMessage }</Alert>
+          }
           <Button
             type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            disabled={isRequestSent}
           >
             Sign Up
           </Button>

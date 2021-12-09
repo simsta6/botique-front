@@ -28,9 +28,9 @@ const App = (): JSX.Element => {
       <Routes>
         <Route path="/" />
 
-        <Route path="/login" element={<Login setUser={setUser}/>} />
+        <Route path="/login" element={<Login {...{setUser}}/>} />
 
-        <Route path="/register" element={<Register/>} />
+        <Route path="/register" element={<Register {...{setUser}}/>} />
 
       </Routes>
     </ThemeProvider>

@@ -14,6 +14,7 @@ import { login } from "../services/UserServices";
 import { useNavigate } from "react-router-dom";
 import { Alert } from "@mui/material";
 import { User } from "../utils/interfaces";
+import emailValidator from "email-validator";
 
 interface Props {
   setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
@@ -27,22 +28,27 @@ export default function Login({setUser}: Props): JSX.Element {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setIsRequestSent(true);
     const data = new FormData(event.currentTarget);
     const email = data.get("email")?.toString();
     const password = data.get("password")?.toString();
     if (email && password) {
-      const response = await login({ email, password });
-      if (response.status === "Failed" && typeof response.data === "string") {
-        setResponseMessage(response.data);
-      } else if (response.status === "Success" && typeof response.data !== "string") {
-        navigate("/", { replace: true });
-        setUser(response.data);   
+      if (emailValidator.validate(email)) {
+        setIsRequestSent(true);
+        const response = await login({ email, password });
+        if (response.status === "Failed" && typeof response.data === "string") {
+          setResponseMessage(response.data);
+        } else if (response.status === "Success" && typeof response.data !== "string") {
+          navigate("/", { replace: true });
+          setUser(response.data);   
+        }
+        setIsRequestSent(false);
+      } else {
+        setResponseMessage("Invalid email");
       }
-      setIsRequestSent(false);
-    }
+    } else {
     //TODO: check if valid email
-    setResponseMessage("Email and password is required");
+      setResponseMessage("Email and password is required");
+    }
   };
 
   return (
