@@ -13,14 +13,21 @@ import { Link as RouterLink } from "react-router-dom";
 import { login } from "../services/UserServices";
 import { useNavigate } from "react-router-dom";
 import { Alert } from "@mui/material";
+import { User } from "../utils/interfaces";
 
-export default function Login(): JSX.Element {
+interface Props {
+  setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
+}
 
+export default function Login({setUser}: Props): JSX.Element {
+
+  const [isRequestSent, setIsRequestSent] = React.useState(false);
   const [responseMessage, setResponseMessage] = React.useState<string>();
   const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsRequestSent(true);
     const data = new FormData(event.currentTarget);
     const email = data.get("email")?.toString();
     const password = data.get("password")?.toString();
@@ -28,10 +35,14 @@ export default function Login(): JSX.Element {
       const response = await login({ email, password });
       if (response.status === "Failed" && typeof response.data === "string") {
         setResponseMessage(response.data);
-      } else if (response.status === "Success") {
+      } else if (response.status === "Success" && typeof response.data !== "string") {
         navigate("/", { replace: true });
+        setUser(response.data);   
       }
+      setIsRequestSent(false);
     }
+    //TODO: check if valid email
+    setResponseMessage("Email and password is required");
   };
 
   return (
@@ -83,6 +94,7 @@ export default function Login(): JSX.Element {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            disabled={isRequestSent}
           >
             Sign In
           </Button>

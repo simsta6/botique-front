@@ -1,4 +1,6 @@
+import { User } from "./../utils/interfaces";
 import axios from "axios";
+import { API_URL } from "../utils/constants";
 
 interface UserLoginData {
   email: string;
@@ -7,32 +9,30 @@ interface UserLoginData {
 
 export interface UserLoginResponse {
     status: "Success" | "Failed";
-    data: {
-        _id: string;
-        first_name: string;
-        last_name: string;
-        email: string;
-        password: string;
-        role: "seller" | "buyer" | "admin";
+    data: User & {      
         __v: number;
         token: string;
     } | string
 }
 
-const url = "https://botique-ss.herokuapp.com/api/login";
+const config = {
+  credentials: "include",
+  headers: {
+    "content-type": "application/json"
+  },
+  validateStatus: (status: number) => {
+    return status >= 200 && status < 500;
+  },
+};
 
 export const login = async (data: UserLoginData): Promise<UserLoginResponse> => {
-  const config = {
-    credentials: "include",
-    headers: {
-      "content-type": "application/json"
-    },
-    validateStatus: (status: number) => {
-      return status >= 200 && status < 500;
-    },
-  };
+  const res = await axios.post<UserLoginResponse>(API_URL + "/login", data, config);
 
-  const res = await axios.post<UserLoginResponse>(url, data, config);
+  return res.data;
+};
+
+export const logout = async (): Promise<UserLoginResponse> => {
+  const res = await axios.post<UserLoginResponse>(API_URL + "/logout", {}, config);
 
   return res.data;
 };
