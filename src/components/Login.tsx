@@ -1,20 +1,10 @@
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Avatar from "@mui/material/Avatar";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
-import CssBaseline from "@mui/material/CssBaseline";
-import Grid from "@mui/material/Grid";
-import Link from "@mui/material/Link";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
-import * as React from "react";
-import { Link as RouterLink } from "react-router-dom";
-import { login } from "../services/UserServices";
-import { useNavigate } from "react-router-dom";
-import { Alert } from "@mui/material";
-import { User } from "../utils/interfaces";
+import { Alert, Avatar, Box, Button, Container, CssBaseline, Grid, Link, TextField, Typography } from "@mui/material";
 import emailValidator from "email-validator";
+import * as React from "react";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { login } from "../services/UserServices";
+import { User } from "../utils/interfaces";
 
 interface Props {
   setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
