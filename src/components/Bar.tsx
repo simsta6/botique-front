@@ -8,7 +8,7 @@ import Link from "@mui/material/Link";
 import { AccountCircle } from "@mui/icons-material";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import React from "react";
-import { User } from "../utils/interfaces";
+import { User } from "../interfaces/UserInterfaces";
 import { logout } from "../services/UserServices";
 
 interface Props {

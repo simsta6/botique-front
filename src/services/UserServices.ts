@@ -1,51 +1,20 @@
 import axios from "axios";
+import { UserLoginData, UserLoginResponse, UserRegisterData, UserRegisterResponse } from "../interfaces/UserInterfaces";
 import { API_URL } from "../utils/constants";
-import { User } from "./../utils/interfaces";
-
-const config = {
-  credentials: "include",
-  headers: {
-    "content-type": "application/json"
-  },
-  validateStatus: (status: number) => {
-    return status >= 200 && status < 500;
-  },
-};
-
-interface UserLoginData {
-  email: string;
-  password: string;
-}
-
-export interface UserLoginResponse {
-    status: "Success" | "Failed";
-    data: User & {      
-        __v: number;
-        token: string;
-    } | string
-}
+import { axiosConfig } from "../utils/utils";
 
 export const login = async (data: UserLoginData): Promise<UserLoginResponse> => {
-  const res = await axios.post<UserLoginResponse>(API_URL + "/login", data, config);
+  const res = await axios.post<UserLoginResponse>(API_URL + "/login", data, axiosConfig);
 
   return res.data;
 };
 
-interface UserRegisterData {
-  first_name: string;
-  last_name: string;
-  email: string;
-  password: string;
-}
-
-export type UserRegisterResponse = UserLoginResponse
-
 export const register = async (data: UserRegisterData): Promise<UserRegisterResponse> => {
-  const res = await axios.post<UserRegisterResponse>(API_URL + "/register", data, config);
+  const res = await axios.post<UserRegisterResponse>(API_URL + "/register", data, axiosConfig);
 
   return res.data;
 };
 
 export const logout = async (): Promise<void> => {
-  await axios.post<UserLoginResponse>(API_URL + "/logout", {}, config);
+  await axios.post<UserLoginResponse>(API_URL + "/logout", {}, axiosConfig);
 };

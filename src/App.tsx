@@ -3,9 +3,10 @@ import { ThemeProvider } from "@mui/system";
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Bar from "./components/Bar";
-import Login from "./components/Login";
-import Register from "./components/Register";
-import { User } from "./utils/interfaces";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import { User } from "./interfaces/UserInterfaces";
+import Home from "./pages/Home";
 
 const App = (): JSX.Element => {
   const [ user, setUser ] = React.useState<User>();
@@ -26,7 +27,7 @@ const App = (): JSX.Element => {
       <CssBaseline />
       <Bar {...{user, setUser}}/>
       <Routes>
-        <Route path="/" />
+        <Route path="/" element={<Home />}/>
 
         <Route path="/login" element={<Login {...{setUser}}/>} />
 

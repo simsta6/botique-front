@@ -4,28 +4,39 @@ import emailValidator from "email-validator";
 import * as React from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { register } from "../services/UserServices";
-import { User } from "../utils/interfaces";
+import { UserRegisterData } from "../interfaces/UserInterfaces";
+import { User } from "../interfaces/UserInterfaces";
+import { registerSchema } from "../schemas/UserSchema";
+
+const getFormattedData = (data: FormData): UserRegisterData | undefined => {
+  const first_name = data.get("first_name")?.toString();
+  const last_name = data.get("last_name")?.toString();
+  const email = data.get("email")?.toString();
+  const password = data.get("password")?.toString();
+
+  const isDataValid = first_name && last_name && email && password;
+
+  return isDataValid ? { first_name, last_name, email, password }: undefined;
+};
 
 interface Props {
   setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
 }
 
 export default function SignUp({setUser}: Props): JSX.Element {
+  const [isValidEmail, setIsValidEmail] = React.useState(true);
   const [isRequestSent, setIsRequestSent] = React.useState(false);
   const [responseMessage, setResponseMessage] = React.useState<string>();
   const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const first_name = data.get("first_name")?.toString();
-    const last_name = data.get("last_name")?.toString();
-    const email = data.get("email")?.toString();
-    const password = data.get("password")?.toString();
-    if (first_name && last_name && email && password) {
-      if (emailValidator.validate(email)) {
+
+    const data = getFormattedData(new FormData(event.currentTarget));
+    registerSchema.validate(data)
+      .then(async data => {
         setIsRequestSent(true);
-        const response = await register({ first_name, last_name, email, password });
+        const response = await register(data);
         if (response.status === "Failed" && typeof response.data === "string") {
           setResponseMessage(response.data);
         } else if (response.status === "Success" && typeof response.data !== "string") {
@@ -33,12 +44,8 @@ export default function SignUp({setUser}: Props): JSX.Element {
           setUser(response.data);   
         }
         setIsRequestSent(false);
-      } else {
-        setResponseMessage("Invalid email");
-      }
-    } else {
-      setResponseMessage("All fields are required");
-    }
+      })
+      .catch(err => err.errors && setResponseMessage (err.errors.join()));
   };
 
   return (
@@ -89,7 +96,11 @@ export default function SignUp({setUser}: Props): JSX.Element {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                onChange={(e => setIsValidEmail(emailValidator.validate(e.target.value)))}
               />
+              {
+                !isValidEmail && <Alert severity="error" onClose={() => setIsValidEmail(true)}>Invalid Email</Alert>
+              }
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -104,10 +115,7 @@ export default function SignUp({setUser}: Props): JSX.Element {
             </Grid>
           </Grid>
           {
-            responseMessage && 
-            <Alert severity="error" onClose={() => {
-              setResponseMessage("");
-            }}>{ responseMessage }</Alert>
+            responseMessage &&  <Alert severity="error" onClose={() =>setResponseMessage("")}>{ responseMessage }</Alert>
           }
           <Button
             type="submit"

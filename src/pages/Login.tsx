@@ -4,27 +4,36 @@ import emailValidator from "email-validator";
 import * as React from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { login } from "../services/UserServices";
-import { User } from "../utils/interfaces";
+import { User, UserLoginData } from "../interfaces/UserInterfaces";
+import { loginSchema } from "../schemas/UserSchema";
+
+const getFormattedData = (data: FormData): UserLoginData | undefined => {
+  const email = data.get("email")?.toString();
+  const password = data.get("password")?.toString();
+
+  const isDataValid = email && password;
+
+  return isDataValid ? { email, password }: undefined;
+};
 
 interface Props {
   setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
 }
 
 export default function Login({setUser}: Props): JSX.Element {
-
+  
+  const [isValidEmail, setIsValidEmail] = React.useState(true);
   const [isRequestSent, setIsRequestSent] = React.useState(false);
   const [responseMessage, setResponseMessage] = React.useState<string>();
   const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const email = data.get("email")?.toString();
-    const password = data.get("password")?.toString();
-    if (email && password) {
-      if (emailValidator.validate(email)) {
+    const data = getFormattedData(new FormData(event.currentTarget));
+    loginSchema.validate(data)
+      .then(async data => {
         setIsRequestSent(true);
-        const response = await login({ email, password });
+        const response = await login(data);
         if (response.status === "Failed" && typeof response.data === "string") {
           setResponseMessage(response.data);
         } else if (response.status === "Success" && typeof response.data !== "string") {
@@ -32,13 +41,8 @@ export default function Login({setUser}: Props): JSX.Element {
           setUser(response.data);   
         }
         setIsRequestSent(false);
-      } else {
-        setResponseMessage("Invalid email");
-      }
-    } else {
-    //TODO: check if valid email
-      setResponseMessage("Email and password is required");
-    }
+      })
+      .catch(err => err.errors && setResponseMessage (err.errors.join()));
   };
 
   return (
@@ -68,7 +72,11 @@ export default function Login({setUser}: Props): JSX.Element {
             name="email"
             autoComplete="email"
             autoFocus
+            onChange={(e => setIsValidEmail(emailValidator.validate(e.target.value)))}
           />
+          {
+            !isValidEmail && <Alert severity="error" onClose={() => setIsValidEmail(true)}>Invalid Email</Alert>
+          }
           <TextField
             margin="normal"
             required
