@@ -1,9 +1,14 @@
 import ItemsList from "../components/ItemsList";
+import { User } from "../interfaces/UserInterfaces";
 
-export default function Home(): JSX.Element {
+interface Props {
+  user: User | undefined;
+}
+
+export default function Home({user}: Props): JSX.Element {
   return (
     <>
-      <ItemsList/>
+      <ItemsList {...{user}}/>
     </>
   );
 }

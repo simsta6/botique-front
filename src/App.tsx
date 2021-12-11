@@ -27,7 +27,7 @@ const App = (): JSX.Element => {
       <CssBaseline />
       <Bar {...{user, setUser}}/>
       <Routes>
-        <Route path="/" element={<Home />}/>
+        <Route path="/" element={<Home {...{user}}/>}/>
 
         <Route path="/login" element={<Login {...{setUser}}/>} />
 
