@@ -15,3 +15,8 @@ export interface GetAllItemsResponse {
     __v: number;
   }] | string;
 }
+
+export interface GetItemResponse {
+  status: "Success" | "Failed";
+  data: Item;
+}

@@ -1,5 +1,6 @@
 import { Button, Card, CardActions, CardContent, CardMedia, Container, Grid, Typography } from "@mui/material";
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 import { Item } from "../interfaces/ItemsInterfaces";
 import { User } from "../interfaces/UserInterfaces";
 import { addItemToChart } from "../services/ChartServices";
@@ -10,6 +11,7 @@ interface Props {
 }
 
 const ItemsList = ({user}: Props): JSX.Element => {
+  const navigate = useNavigate();
   const [items, setItems] = React.useState<Item[]>([]);
   const [isAddToChartButtonDisabled, setIsAddToChartButtonDisabled] = React.useState(false);
 
@@ -37,7 +39,7 @@ const ItemsList = ({user}: Props): JSX.Element => {
       >
         {items.map(item => (
           <Grid item xs={12} sm={6} md={3} key={item._id}>
-            <Card>
+            <Card onClick={() => navigate(`/items/${item._id}`)}>
               <CardMedia
                 component="img"
                 height="140"

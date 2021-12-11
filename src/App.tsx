@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import { User } from "./interfaces/UserInterfaces";
 import Home from "./pages/Home";
+import Item from "./pages/Item";
 
 const App = (): JSX.Element => {
   const [ user, setUser ] = React.useState<User>();
@@ -32,6 +33,8 @@ const App = (): JSX.Element => {
         <Route path="/login" element={<Login {...{setUser}}/>} />
 
         <Route path="/register" element={<Register {...{setUser}}/>} />
+
+        <Route path="/items/:id" element={<Item {...{user}}/>} />
 
       </Routes>
     </ThemeProvider>
