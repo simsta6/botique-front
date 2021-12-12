@@ -1,16 +1,17 @@
-import { Box, Container, CssBaseline, Typography } from "@mui/material";
+import { Box, Button, Container, CssBaseline, Grid, Rating, Typography } from "@mui/material";
 import React from "react";
 import { useParams } from "react-router-dom";
+import ReviewsList from "../components/ReviewsList";
 import { Item } from "../interfaces/ItemsInterfaces";
 import { User } from "../interfaces/UserInterfaces";
 import { getItem } from "../services/ItemServices";
+import "../styles/Item.scss";
 
 interface Props {
   user: User | undefined;
 }
 
 export default function ItemPage({user}: Props): JSX.Element {
-  user && "";
   const { id } = useParams();
   const [item, setItem] = React.useState<Item>();
 
@@ -21,20 +22,49 @@ export default function ItemPage({user}: Props): JSX.Element {
   }, []);
 
   return (
-    <Container component="main" maxWidth="xs">
+    item ? (<Container component="main">
       <CssBaseline />
       <Box
         sx={{
           marginTop: 8,
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
+          alignItems: "left",
+          maxWidth: 1080
         }}
       >
-        <Typography component="h1" variant="h5">
-          {item?.brand.toUpperCase()}
-        </Typography>
+        <Grid container spacing={2}>
+          <Grid item>
+            <img className={"item-image"} src={item.imageUrl}/>
+          </Grid>
+          <Grid item xs={120} sm container>
+            <Grid item xs container direction="column" spacing={2}>
+              <Grid item xs>
+                <Typography gutterBottom variant="subtitle1" component="div">
+                  {item.brand.toUpperCase()}
+                </Typography>
+                <Typography variant="body2" gutterBottom>
+                  {item.color.toUpperCase()}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Size: {item.size}
+                </Typography>
+                <Rating name="read-only" value={5} readOnly />
+              </Grid>
+              <Grid item>
+                <Button variant="contained" disabled={!user}>Add to cart</Button>
+              </Grid>
+            </Grid>
+            <Grid item>
+              <Typography variant="h6" component="div">
+              ${item.price}
+              </Typography>
+            </Grid>
+          </Grid>
+        </Grid>
       </Box>
-    </Container>
+      <ReviewsList itemId={id ? id : ""}></ReviewsList>
+    </Container>) 
+      : (<></>)
   );
 }

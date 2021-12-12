@@ -1,5 +1,5 @@
 import axios from "axios";
-import { UserLoginData, UserLoginResponse, UserRegisterData, UserRegisterResponse } from "../interfaces/UserInterfaces";
+import { GetUserResponse, UserLoginData, UserLoginResponse, UserRegisterData, UserRegisterResponse } from "../interfaces/UserInterfaces";
 import { API_URL } from "../utils/constants";
 import { axiosConfig } from "../utils/utils";
 
@@ -23,4 +23,10 @@ export const register = async (data: UserRegisterData): Promise<UserRegisterResp
 
 export const logout = async (): Promise<void> => {
   await axios.post<UserLoginResponse>(API_URL + "/logout", {}, axiosConfig());
+};
+
+export const getUser = async (id: string): Promise<GetUserResponse> => {
+  const res = await axios.get<GetUserResponse>(API_URL + `/users/${id}`, axiosConfig());
+
+  return res.data;
 };

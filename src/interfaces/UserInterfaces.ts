@@ -28,3 +28,15 @@ export interface UserLoginResponse {
 }
 
 export type UserRegisterResponse = UserLoginResponse;
+
+export interface BasicUserData {
+  first_name: string;
+  last_name: string;
+}
+
+export interface GetUserResponse {
+  status: "Success" | "Failed";
+  data: BasicUserData & {
+    _id: string;
+  } | string;
+}

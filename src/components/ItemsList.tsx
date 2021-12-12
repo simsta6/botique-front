@@ -57,6 +57,7 @@ const ItemsList = ({user}: Props): JSX.Element => {
               <CardActions>
                 <Button 
                   onClick={e => handleOnClick(e, item._id)} 
+                  sx={{ cursor: "pointer" }}
                   size="small"
                   disabled={!user || isAddToChartButtonDisabled}
                 >Add to cart</Button>
