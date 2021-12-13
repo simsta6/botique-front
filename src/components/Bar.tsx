@@ -1,13 +1,13 @@
+import { AccountCircle } from "@mui/icons-material";
+import { IconButton, Menu, MenuItem } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Link from "@mui/material/Link";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { Link as RouterLink } from "react-router-dom";
-import Link from "@mui/material/Link";
-import { AccountCircle } from "@mui/icons-material";
-import { IconButton, Menu, MenuItem } from "@mui/material";
 import React from "react";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { User } from "../interfaces/UserInterfaces";
 import { logout } from "../services/UserServices";
 
@@ -18,6 +18,7 @@ interface Props {
 
 const Bar = ({user, setUser}: Props): JSX.Element => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const navigate = useNavigate();
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -25,6 +26,16 @@ const Bar = ({user, setUser}: Props): JSX.Element => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleOnAdminZone = () => {
+    handleClose();
+    navigate("/admin");
+  };
+
+  const handleOnSellerZone = () => {
+    handleClose();
+    navigate("/seller");
   };
 
   const handleLogout = () => {
@@ -69,7 +80,10 @@ const Bar = ({user, setUser}: Props): JSX.Element => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
+                {/* TODO: chart list as dropdown */}
+                <MenuItem onClick={handleClose}>Chart</MenuItem> 
+                {user.role === "admin" && <MenuItem onClick={handleOnAdminZone}>Admin Zone</MenuItem>}
+                {user.role === "seller" && <MenuItem onClick={handleOnSellerZone}>Seller Zone</MenuItem>}
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
             </div>

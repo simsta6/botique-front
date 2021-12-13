@@ -9,6 +9,8 @@ import { User } from "./interfaces/UserInterfaces";
 import Home from "./pages/Home";
 import Item from "./pages/Item";
 import ReviewForm from "./pages/ReviewForm";
+import AdminZone from "./pages/AdminZone";
+import SellerZone from "./pages/SellerZone";
 
 const App = (): JSX.Element => {
   const [ user, setUser ] = React.useState<User>();
@@ -41,6 +43,10 @@ const App = (): JSX.Element => {
         <Route path="/items/:id/reviews" element={<ReviewForm />} />
 
         <Route path="/items/:id/reviews/:reviewId" element={<ReviewForm />} />
+
+        <Route path="/admin" element={<AdminZone {...{user}}/>} />
+
+        <Route path="/seller" element={<SellerZone {...{user}}/>} />
 
       </Routes>
     </ThemeProvider>
