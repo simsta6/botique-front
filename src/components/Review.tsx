@@ -62,7 +62,7 @@ export default function Review({ user, itemId, reviewId, userId, comment, rating
             }
           />
         </Grid>
-        <Grid item xs={1} sx={{marginTop: 1}}>
+        <Grid item xs={1} sx={{marginTop: 1.5}}>
           <Grid container spacing={2}>
             { user && userId === user._id && (
               <>

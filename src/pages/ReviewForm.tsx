@@ -1,4 +1,5 @@
-import { Alert, Box, Button, Container, CssBaseline, TextField, Typography } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import { Alert, Avatar, Box, Button, Container, CssBaseline, TextField, Typography } from "@mui/material";
 import * as React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ReviewData } from "../interfaces/ReviewsInterfaces";
@@ -49,58 +50,65 @@ export default function ReviewForm(): JSX.Element {
 
   return (
     <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <Box
-        sx={{
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Typography component="h1" variant="h5">
+      {oldReview &&
+      <>
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <EditIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
           Add new review
-        </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          <TextField
-            margin="normal"
-            fullWidth
-            id="comment"
-            label="Comment"
-            name="comment"
-            autoFocus
-            defaultValue={oldReview?.comment}
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="rating"
-            label="Rating"
-            type="number"
-            id="rating"
-            defaultValue={oldReview?.rating}
-            onChange = {(e) =>{
-              e.target.value = Math.min(Math.max(0, parseInt(e.target.value)), 5).toString();
-            }}
-          />
-          {
-            responseMessage && 
+          </Typography>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            <TextField
+              margin="normal"
+              fullWidth
+              id="comment"
+              label="Comment"
+              name="comment"
+              autoFocus
+              defaultValue={oldReview.comment}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="rating"
+              label="Rating"
+              type="number"
+              id="rating"
+              defaultValue={oldReview.rating}
+              onChange = {(e) =>{
+                e.target.value = Math.min(Math.max(0, parseInt(e.target.value)), 5).toString();
+              }}
+            />
+            {
+              responseMessage && 
             <Alert severity="error" onClose={() => {
               setResponseMessage("");
             }}>{ responseMessage }</Alert>
-          }
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            disabled={isRequestSent}
-          >
+            }
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              disabled={isRequestSent}
+            >
             Post a review
-          </Button>
+            </Button>
+          </Box>
         </Box>
-      </Box>
+      </>
+      }
     </Container>
   );
 }
