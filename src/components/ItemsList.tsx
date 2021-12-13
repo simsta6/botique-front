@@ -29,7 +29,7 @@ const ItemsList = ({user}: Props): JSX.Element => {
   };
 
   return (
-    <Container component="main" style={{maxHeight: 500, overflow: "auto"}}>
+    <Container component="main" style={{maxHeight: 700, overflow: "auto"}}>
       <Grid
         container={true}
         spacing={2}

@@ -8,6 +8,7 @@ import Register from "./pages/Register";
 import { User } from "./interfaces/UserInterfaces";
 import Home from "./pages/Home";
 import Item from "./pages/Item";
+import ReviewForm from "./pages/ReviewForm";
 
 const App = (): JSX.Element => {
   const [ user, setUser ] = React.useState<User>();
@@ -28,6 +29,7 @@ const App = (): JSX.Element => {
       <CssBaseline />
       <Bar {...{user, setUser}}/>
       <Routes>
+      
         <Route path="/" element={<Home {...{user}}/>}/>
 
         <Route path="/login" element={<Login {...{setUser}}/>} />
@@ -35,6 +37,10 @@ const App = (): JSX.Element => {
         <Route path="/register" element={<Register {...{setUser}}/>} />
 
         <Route path="/items/:id" element={<Item {...{user}}/>} />
+
+        <Route path="/items/:id/reviews" element={<ReviewForm />} />
+
+        <Route path="/items/:id/reviews/:reviewId" element={<ReviewForm />} />
 
       </Routes>
     </ThemeProvider>

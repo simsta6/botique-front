@@ -1,4 +1,4 @@
-import { Box, Button, Container, CssBaseline, Grid, Rating, Typography } from "@mui/material";
+import { Box, Button, Container, CssBaseline, Grid, Typography } from "@mui/material";
 import React from "react";
 import { useParams } from "react-router-dom";
 import ReviewsList from "../components/ReviewsList";
@@ -49,7 +49,6 @@ export default function ItemPage({user}: Props): JSX.Element {
                 <Typography variant="body2" color="text.secondary">
                   Size: {item.size}
                 </Typography>
-                <Rating name="read-only" value={5} readOnly />
               </Grid>
               <Grid item>
                 <Button variant="contained" disabled={!user}>Add to cart</Button>
@@ -63,7 +62,7 @@ export default function ItemPage({user}: Props): JSX.Element {
           </Grid>
         </Grid>
       </Box>
-      <ReviewsList itemId={id ? id : ""}></ReviewsList>
+      <ReviewsList user={user} itemId={id ? id : ""}></ReviewsList>
     </Container>) 
       : (<></>)
   );

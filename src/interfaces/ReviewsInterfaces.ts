@@ -10,3 +10,20 @@ export interface GetAllReviewsResponse {
   status: "Success" | "Failed";
   data: [Review] | string;
 }
+
+export interface GetReviewResponse {
+  status: "Success" | "Failed";
+  data: Review | string;
+}
+
+export interface PostReviewResponse {
+  status: "Success" | "Failed";
+  data: Review | string;
+}
+
+export type EditReviewResponse = PostReviewResponse;
+
+export interface ReviewData {
+  rating: number;
+  comment: string;
+}
