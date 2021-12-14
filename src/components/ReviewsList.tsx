@@ -42,7 +42,7 @@ const ReviewsList = ({ user, itemId }: Props): JSX.Element => {
       <List sx={{ width: "100%", maxWidth: 1080, bgcolor: "background.paper" }}>
         {reviews.map(x => {
           return (
-            <ReviewComponent {...{
+            <ReviewComponent key={x._id} {...{
               user, itemId, reviewId: x._id, userId: x.user, comment: x.comment, rating: x.rating 
             }}/>
           );
