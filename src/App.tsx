@@ -13,6 +13,7 @@ import AdminZone from "./pages/AdminZone";
 import SellerZone from "./pages/SellerZone";
 import AddSeller from "./pages/AddSeller";
 import NewItemForm from "./pages/NewItemForm";
+import "./styles/Scrollbar.scss";
 
 const App = (): JSX.Element => {
   const [ user, setUser ] = React.useState<User>();
