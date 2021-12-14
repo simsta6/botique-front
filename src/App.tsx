@@ -11,6 +11,8 @@ import Item from "./pages/Item";
 import ReviewForm from "./pages/ReviewForm";
 import AdminZone from "./pages/AdminZone";
 import SellerZone from "./pages/SellerZone";
+import AddSeller from "./pages/AddSeller";
+import NewItemForm from "./pages/NewItemForm";
 
 const App = (): JSX.Element => {
   const [ user, setUser ] = React.useState<User>();
@@ -32,7 +34,7 @@ const App = (): JSX.Element => {
       <Bar {...{user, setUser}}/>
       <Routes>
       
-        <Route path="/" element={<Home {...{user}}/>}/>
+        <Route path="/" element={<Home />}/>
 
         <Route path="/login" element={<Login {...{setUser}}/>} />
 
@@ -44,9 +46,13 @@ const App = (): JSX.Element => {
 
         <Route path="/items/:id/reviews/:reviewId" element={<ReviewForm />} />
 
-        <Route path="/admin" element={<AdminZone {...{user}}/>} />
+        <Route path="/admin" element={<AdminZone />} />
 
-        <Route path="/seller" element={<SellerZone {...{user}}/>} />
+        <Route path="/seller" element={<SellerZone />} />
+
+        <Route path="/post-seller" element={<AddSeller />} />
+
+        <Route path="/items" element={<NewItemForm />} />
 
       </Routes>
     </ThemeProvider>

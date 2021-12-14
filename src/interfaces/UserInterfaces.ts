@@ -40,3 +40,16 @@ export interface GetUserResponse {
     _id: string;
   } | string;
 }
+
+export interface AdminGottenUser {
+  _id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  role: "buyer" | "admin";
+}
+
+export interface GetUsersResponse {
+  status: "Success" | "Failed";
+  data: [AdminGottenUser] | string;
+}

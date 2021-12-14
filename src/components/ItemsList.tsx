@@ -1,19 +1,12 @@
-import { Button, Card, CardActions, CardContent, CardMedia, Container, Grid, Typography } from "@mui/material";
+import { Card, CardContent, CardMedia, Container, Grid, Typography } from "@mui/material";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { Item } from "../interfaces/ItemsInterfaces";
-import { User } from "../interfaces/UserInterfaces";
-import { addItemToChart } from "../services/ChartServices";
 import { getAllItems } from "../services/ItemServices";
 
-interface Props {
-  user: User | undefined;
-}
-
-const ItemsList = ({user}: Props): JSX.Element => {
+const ItemsList = (): JSX.Element => {
   const navigate = useNavigate();
   const [items, setItems] = React.useState<Item[]>([]);
-  const [isAddToChartButtonDisabled, setIsAddToChartButtonDisabled] = React.useState(false);
 
   React.useEffect(() => {
     if(!items.length) {
@@ -21,15 +14,8 @@ const ItemsList = ({user}: Props): JSX.Element => {
     }
   }, []);
 
-  const handleOnClick = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, itemId: string) => {
-    event.preventDefault();
-    setIsAddToChartButtonDisabled(true);
-    await addItemToChart(itemId);
-    setIsAddToChartButtonDisabled(false);
-  };
-
   return (
-    <Container component="main" style={{maxHeight: 700, overflow: "auto"}}>
+    <Container component="main" style={{maxHeight: 700, overflow: "auto", cursor: "pointer"}}>
       <Grid
         container={true}
         spacing={2}
@@ -54,14 +40,6 @@ const ItemsList = ({user}: Props): JSX.Element => {
                   {item.price}$
                 </Typography>
               </CardContent>
-              <CardActions>
-                <Button 
-                  onClick={e => handleOnClick(e, item._id)} 
-                  sx={{ cursor: "pointer" }}
-                  size="small"
-                  disabled={!user || isAddToChartButtonDisabled}
-                >Add to cart</Button>
-              </CardActions>
             </Card>
           </Grid>
         ))}

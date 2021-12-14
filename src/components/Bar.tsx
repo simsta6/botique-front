@@ -10,6 +10,7 @@ import React from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { User } from "../interfaces/UserInterfaces";
 import { logout } from "../services/UserServices";
+import ChartModal from "./ChartModal";
 
 interface Props {
   user: User | undefined;
@@ -17,6 +18,8 @@ interface Props {
 }
 
 const Bar = ({user, setUser}: Props): JSX.Element => {
+
+  const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const navigate = useNavigate();
 
@@ -26,6 +29,11 @@ const Bar = ({user, setUser}: Props): JSX.Element => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleOnChart = () => {
+    handleClose();
+    setOpen(true);
   };
 
   const handleOnAdminZone = () => {
@@ -46,6 +54,7 @@ const Bar = ({user, setUser}: Props): JSX.Element => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
+      <ChartModal {...{open, setOpen}}></ChartModal>
       <AppBar position="static">
         <Toolbar>
           <Link sx={{ flexGrow: 1 }} color="inherit" component={RouterLink} to="/" underline="none">
@@ -80,8 +89,8 @@ const Bar = ({user, setUser}: Props): JSX.Element => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                {/* TODO: chart list as dropdown */}
-                <MenuItem onClick={handleClose}>Chart</MenuItem> 
+                {/* TODO: chart list as dropdown https://mui.com/components/menus/*/}
+                <MenuItem onClick={handleOnChart}>Chart</MenuItem> 
                 {user.role === "admin" && <MenuItem onClick={handleOnAdminZone}>Admin Zone</MenuItem>}
                 {user.role === "seller" && <MenuItem onClick={handleOnSellerZone}>Seller Zone</MenuItem>}
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>

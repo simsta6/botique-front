@@ -9,6 +9,15 @@ export interface Item {
   seller: string;
 }
 
+export interface NewItem {
+  brand: string;
+  color: string;
+  count: number;
+  size: number;
+  price: number;
+  imageUrl: string;
+}
+
 export interface GetAllItemsResponse {
   status: "Success" | "Failed";
   data: [Item & {

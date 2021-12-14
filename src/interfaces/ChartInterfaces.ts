@@ -1,3 +1,5 @@
+import { Item } from "./ItemsInterfaces";
+
 export interface AddItemToChartResponse {
   status: "Success" | "Failed";
   data: {
@@ -8,4 +10,14 @@ export interface AddItemToChartResponse {
       count: number
     }]
   } | string;
+}
+
+export interface ChartItem {
+  item: Item;
+  count: number;
+}
+
+export interface GetAllItemsInChartResponse {
+  status: "Success" | "Failed";
+  data: [ChartItem] | string;
 }
