@@ -15,8 +15,19 @@ import AddSeller from "./pages/AddSeller";
 import NewItemForm from "./pages/NewItemForm";
 import "./styles/Scrollbar.scss";
 
+export const setUser = (user: User | undefined): void => {
+  user ? localStorage.setItem("user", JSON.stringify(user)) : localStorage.removeItem("user");
+};
+
+export const getUser = (): User | undefined => {
+  const user = localStorage.getItem("user");
+  return user ? JSON.parse(user) : undefined;
+};
+
 const App = (): JSX.Element => {
-  const [ user, setUser ] = React.useState<User>();
+  const [ user, setUser ] = React.useState<User | undefined>(getUser());
+
+  React.useEffect(() => setUser(user), [user]);
 
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   const theme = React.useMemo(
