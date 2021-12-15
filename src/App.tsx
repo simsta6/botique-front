@@ -1,4 +1,4 @@
-import { createTheme, CssBaseline, useMediaQuery } from "@mui/material";
+import { createTheme, CssBaseline, useMediaQuery, Container, Toolbar, Typography } from "@mui/material";
 import { ThemeProvider } from "@mui/system";
 import React from "react";
 import { Route, Routes } from "react-router-dom";
@@ -67,6 +67,14 @@ const App = (): JSX.Element => {
         <Route path="/items" element={<NewItemForm />} />
 
       </Routes>
+
+      <Container maxWidth="md">
+        <Toolbar>
+          <Typography variant="body1" color="inherit">
+            © 2021 Simas Stasys
+          </Typography>
+        </Toolbar>
+      </Container>
     </ThemeProvider>
 
   );
