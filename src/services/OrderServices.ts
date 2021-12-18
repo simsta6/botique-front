@@ -1,7 +1,7 @@
 import axios from "axios";
 import { GetAllOrdersResponse } from "../interfaces/OrdersInterfaces";
 import { API_URL } from "../utils/constants";
-import { axiosConfig } from "../utils/utils";
+import { axiosConfig } from "./config";
 
 export const makeAnOrder = async (): Promise<boolean> => {
   const res = await axios.post(API_URL + "/orders", axiosConfig());

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { GetAllItemsResponse, GetItemResponse, NewItem } from "../interfaces/ItemsInterfaces";
 import { API_URL } from "../utils/constants";
-import { axiosConfig } from "../utils/utils";
+import { axiosConfig } from "./config";
 
 export const getAllItems = async (): Promise<GetAllItemsResponse> => {
   const res = await axios.get<GetAllItemsResponse>(API_URL + "/items", axiosConfig());

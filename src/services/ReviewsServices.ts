@@ -1,7 +1,7 @@
 import axios from "axios";
 import { EditReviewResponse, GetAllReviewsResponse, GetReviewResponse, PostReviewResponse, ReviewData } from "../interfaces/ReviewsInterfaces";
 import { API_URL } from "../utils/constants";
-import { axiosConfig } from "../utils/utils";
+import { axiosConfig } from "./config";
 
 export const getAllReviews = async (itemId: string): Promise<GetAllReviewsResponse> => {
   const res = await axios.get<GetAllReviewsResponse>(API_URL + `/items/${itemId}/reviews`, axiosConfig());

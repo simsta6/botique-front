@@ -1,7 +1,7 @@
 import axios from "axios";
 import { GetUserResponse, GetUsersResponse, UserLoginData, UserLoginResponse, UserRegisterData, UserRegisterResponse } from "../interfaces/UserInterfaces";
 import { API_URL } from "../utils/constants";
-import { axiosConfig } from "../utils/utils";
+import { axiosConfig } from "./config";
 
 export const login = async (data: UserLoginData): Promise<UserLoginResponse> => {
   const res = await axios.post<UserLoginResponse>(API_URL + "/login", data, axiosConfig());
